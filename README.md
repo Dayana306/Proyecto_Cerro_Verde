@@ -1,1 +1,0 @@
-# Proyecto_Cerro_Verde
