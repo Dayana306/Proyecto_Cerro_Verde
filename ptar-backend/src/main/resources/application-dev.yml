@@ -1,0 +1,17 @@
+# Perfil de desarrollo local. NO usar en producción.
+spring:
+  datasource:
+    url: ${DB_URL:jdbc:mysql://localhost:3307/ptar_enlozada?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Lima}
+    username: ${DB_USER:smcv_app}
+    password: ${DB_PASSWORD:smcv_dev}
+
+app:
+  jwt:
+    secret: ${JWT_SECRET:secreto_de_desarrollo_cambiar_en_produccion_0123456789}
+  dev-admin:
+    correo: admin@smcv.local
+    password: Admin12345!
+
+logging:
+  level:
+    pe.smcv.ptar: DEBUG

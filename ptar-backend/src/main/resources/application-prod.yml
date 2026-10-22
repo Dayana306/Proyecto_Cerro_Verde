@@ -1,0 +1,11 @@
+# Perfil de producción: sin Swagger y sin datos de ejemplo.
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    enabled: false
+
+logging:
+  level:
+    root: INFO
+    pe.smcv.ptar: INFO
