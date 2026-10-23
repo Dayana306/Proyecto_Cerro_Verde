@@ -1,0 +1,73 @@
+# =====================================================================
+#  Configuración común. Los valores ${VAR:defecto} se pueden cambiar con
+#  variables de entorno (ver .env.example). Perfiles: dev | prod.
+# =====================================================================
+spring:
+  application:
+    name: ptar-backend
+  profiles:
+    default: dev
+  datasource:
+    url: ${DB_URL:jdbc:mysql://localhost:3306/ptar_enlozada?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Lima&characterEncoding=UTF-8}
+    username: ${DB_USER:smcv_app}
+    password: ${DB_PASSWORD:smcv_dev}
+  jpa:
+    open-in-view: false
+    hibernate:
+      # El esquema lo crea Flyway (o el script del responsable de BD).
+      # validate = Hibernate verifica al arrancar que tablas y columnas coinciden con las entidades.
+      ddl-auto: ${JPA_DDL_AUTO:validate}
+    properties:
+      hibernate:
+        default_batch_fetch_size: 50
+        jdbc:
+          time_zone: America/Lima
+  flyway:
+    # true  = el backend crea/actualiza las tablas con src/main/resources/db/migration (recomendado)
+    # false = la BD la crea manualmente el responsable de BD con su propio script
+    enabled: ${FLYWAY_ENABLED:true}
+    locations: classpath:db/migration
+    user: ${FLYWAY_USER:${DB_USER:smcv_app}}
+    password: ${FLYWAY_PASSWORD:${DB_PASSWORD:smcv_dev}}
+  jackson:
+    time-zone: America/Lima
+    default-property-inclusion: non_null
+    serialization:
+      write-dates-as-timestamps: false
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 11MB
+
+server:
+  port: ${PORT:8081}
+  error:
+    include-message: never
+    include-stacktrace: never
+
+app:
+  jwt:
+    # Mínimo 32 caracteres. En producción SIEMPRE definir JWT_SECRET.
+    secret: ${JWT_SECRET:secreto_de_desarrollo_cambiar_en_produccion_0123456789}
+    expiration-minutes: ${JWT_EXPIRATION_MINUTES:480}
+  cors:
+    # Orígenes del frontend separados por coma (Vite usa 5173, CRA 3000).
+    allowed-origins: ${CORS_ORIGINS:http://localhost:5173,http://localhost:3000,http://127.0.0.1:5173}
+  storage:
+    # Carpeta para documentos subidos y reportes generados.
+    dir: ${STORAGE_DIR:./almacenamiento}
+  demo:
+    # Carga datos de demostración al arrancar (solo con perfil dev y BD sin puntos).
+    enabled: ${DEMO_DATA:true}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: alpha
+    tags-sorter: alpha

@@ -1,0 +1,17 @@
+# Perfil de producción: sin Swagger, sin datos demo y JWT_SECRET obligatorio.
+app:
+  jwt:
+    secret: ${JWT_SECRET}
+  demo:
+    enabled: false
+
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    enabled: false
+
+logging:
+  level:
+    root: INFO
+    pe.smcv.ptar: INFO

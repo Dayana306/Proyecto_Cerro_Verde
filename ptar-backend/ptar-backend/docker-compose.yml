@@ -1,0 +1,53 @@
+# ---------------------------------------------------------------------
+#  Desarrollo local
+#    Solo la base de datos:   docker compose up -d db        (y el backend desde el IDE)
+#    Base de datos + backend: docker compose up -d --build
+#    Borrar todo y empezar de cero (incluye datos):  docker compose down -v
+# ---------------------------------------------------------------------
+services:
+  db:
+    image: mysql:8.0
+    container_name: ptar-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root_dev}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-ptar_enlozada}
+      MYSQL_USER: ${MYSQL_USER:-smcv_app}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-smcv_dev}
+      TZ: America/Lima
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --default-time-zone=-05:00
+    ports:
+      - "3307:3306"   # en tu PC: localhost:3307 (evita chocar con un MySQL ya instalado)
+    volumes:
+      - ptar_mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p${MYSQL_ROOT_PASSWORD:-root_dev}"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+
+  backend:
+    build: .
+    container_name: ptar-backend
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-dev}
+      DB_URL: jdbc:mysql://db:3306/${MYSQL_DATABASE:-ptar_enlozada}?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Lima&characterEncoding=UTF-8
+      DB_USER: ${MYSQL_USER:-smcv_app}
+      DB_PASSWORD: ${MYSQL_PASSWORD:-smcv_dev}
+      JWT_SECRET: ${JWT_SECRET:-secreto_de_desarrollo_cambiar_en_produccion_0123456789}
+      JWT_EXPIRATION_MINUTES: ${JWT_EXPIRATION_MINUTES:-480}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:5173,http://localhost:3000}
+      DEMO_DATA: ${DEMO_DATA:-true}
+      STORAGE_DIR: /app/almacenamiento
+    ports:
+      - "8080:8080"
+    volumes:
+      - ptar_almacenamiento:/app/almacenamiento
+
+volumes:
+  ptar_mysql_data:
+  ptar_almacenamiento:
