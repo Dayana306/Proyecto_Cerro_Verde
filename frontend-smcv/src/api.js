@@ -34,3 +34,20 @@ export async function login(correo, password) {
 export async function registerAccount(payload) { return apiRequest('/api/auth/register', { method: 'POST', body: JSON.stringify(payload) }); }
 export async function currentUser() { return apiRequest('/api/auth/me'); }
 export function apiBaseUrl() { return API_BASE; }
+
+/** Descarga archivos protegidos por JWT sin exponer el token en una URL. */
+export async function downloadProtectedFile(path, fallbackName = 'archivo') {
+  const response = await apiRequest(path);
+  if (!(response instanceof Response)) throw new Error('La descarga no devolvió un archivo válido.');
+  const blob = await response.blob();
+  const disposition = response.headers.get('content-disposition') || '';
+  let name = fallbackName;
+  const encoded = disposition.match(/filename\*=UTF-8''([^;]+)/i);
+  const plain = disposition.match(/filename="?([^";]+)"?/i);
+  try { if (encoded) name = decodeURIComponent(encoded[1]); else if (plain) name = plain[1]; } catch { /* usa el nombre de respaldo */ }
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a'); link.href = url; link.download = name;
+  document.body.appendChild(link); link.click(); link.remove();
+  window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+  return name;
+}
