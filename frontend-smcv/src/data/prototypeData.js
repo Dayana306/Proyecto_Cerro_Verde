@@ -33,6 +33,7 @@ export const navigation = [
   { id: 'estaciones', label: 'Estaciones', icon: 'pin', roles: ['Administrador', 'Usuario normal'] },
   { id: 'mapa2d', label: 'Mapa 2D', icon: 'map', roles: ['Administrador', 'Usuario normal'] },
   { id: 'alertas', label: 'Alertas', icon: 'bell', roles: ['Administrador', 'Usuario normal'] },
-  { id: 'enviar-reporte', label: 'Enviar un reporte', icon: 'send', roles: ['Usuario normal'] },
   { id: 'reportes', label: 'Reportes y auditoría', icon: 'file', roles: ['Administrador', 'Usuario normal'] },
+  { id: 'usuarios', label: 'Configuración', icon: 'settings', roles: ['Administrador'] },
+  { id: 'configuracion', label: 'Mi perfil', icon: 'user', roles: ['Administrador', 'Usuario normal'] },
 ];
