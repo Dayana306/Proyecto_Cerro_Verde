@@ -23,13 +23,16 @@
 .sidebar-note strong { display: block; margin: 6px 0 4px; color: #f4fbf7; font-size: 12px; }
 .sidebar-note p { margin: 0; color: #a4c0b2; font-size: 11px; line-height: 1.55; }
 .sidebar-account { display: flex; align-items: center; gap: 9px; border-top: 1px solid rgba(255,255,255,.12); padding: 16px 0 0; min-width: 0; }
-.avatar { display: grid; place-items: center; width: 36px; height: 36px; flex: 0 0 auto; border-radius: 11px; background: #d8efe4; color: #135342; font-size: 13px; font-weight: 800; }
-.account-meta { flex: 1; min-width: 0; }
+.avatar { display: grid; place-items: center; position: relative; overflow: hidden; width: 36px; height: 36px; min-width: 36px; min-height: 36px; aspect-ratio: 1 / 1; padding: 0; flex: 0 0 36px; border-radius: 50%; background: #d8efe4; color: #135342; font-size: 13px; line-height: 1; font-weight: 800; }
+.account-meta { flex: 1; min-width: 0; overflow: hidden; }
 .account-meta strong, .account-meta small { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .account-meta strong { font-size: 11px; color: #f6faf7; }
 .account-meta small { margin-top: 3px; font-size: 10px; color: #aac8ba; }
-.logout-icon, .mobile-close { display: grid; place-items: center; border: 0; background: transparent; color: #c4ded1; border-radius: 8px; padding: 8px; }
-.logout-icon:hover, .mobile-close:hover { background: rgba(255,255,255,.09); color: #fff; }
+.mobile-close { display: grid; place-items: center; border: 0; background: transparent; color: #c4ded1; border-radius: 8px; padding: 8px; }
+.logout-button { width: 100%; display: flex; align-items: center; justify-content: center; gap: 9px; margin-top: 10px; padding: 10px 12px; border: 1px solid rgba(255,255,255,.16); border-radius: 10px; background: rgba(255,255,255,.055); color: #edf6f0; font: inherit; font-size: 12px; font-weight: 750; cursor: pointer; transition: background .18s ease, border-color .18s ease, color .18s ease; }
+.logout-button:hover { background: rgba(244, 99, 99, .15); border-color: rgba(255, 160, 160, .45); color: #fff; }
+.logout-button:focus-visible { outline: 2px solid #8cdbbd; outline-offset: 3px; }
+.mobile-close:hover { background: rgba(255,255,255,.09); color: #fff; }
 .mobile-close, .mobile-menu, .mobile-scrim { display: none; }
 .main-column { min-width: 0; }
 .topbar { position: sticky; top: 0; z-index: 20; display: flex; align-items: center; justify-content: space-between; gap: 20px; min-height: 78px; padding: 14px 32px; background: rgba(255,255,255,.96); border-bottom: 1px solid var(--line); backdrop-filter: blur(12px); }
@@ -43,8 +46,8 @@
 .topbar-alert { position: relative; display: grid; place-items: center; width: 36px; height: 36px; border: 1px solid var(--line); border-radius: 10px; color: var(--green-800); background: white; }
 .topbar-alert i { position: absolute; top: 7px; right: 7px; width: 7px; height: 7px; border: 1.5px solid white; background: #ce3e4a; border-radius: 50%; }
 .topbar-separator { height: 34px; width: 1px; background: var(--line); }
-.topbar-profile { display: flex; align-items: center; gap: 9px; }
-.avatar-small { width: 34px; height: 34px; border-radius: 10px; }
+.topbar-profile { display: flex; align-items: center; gap: 9px; min-width: 0; max-width: 290px; }.topbar-profile > div { min-width: 0; max-width: 210px; }.topbar-profile strong, .topbar-profile small { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.avatar-small { width: 34px; height: 34px; min-width: 34px; min-height: 34px; flex-basis: 34px; border-radius: 50%; }
 .topbar-profile strong, .topbar-profile small { display: block; }
 .topbar-profile strong { font-size: 11px; }
 .topbar-profile small { margin-top: 2px; color: var(--muted); font-size: 10px; }
