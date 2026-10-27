@@ -1,0 +1,14 @@
+CORRECCIÓN DE COMPILACIÓN JAVA 17 — PTAR BACKEND
+
+Se fijó el nivel de compilación Maven a Java 17 (release/source/target) y se añadieron ajustes de IntelliJ para el nivel de bytecode 17.
+
+PASOS EN INTELLIJ:
+1. Descomprime este ZIP en una carpeta NUEVA.
+2. Abre la carpeta ptar-backend (la que contiene pom.xml) con IntelliJ.
+3. Si IntelliJ pregunta, elige abrir como proyecto Maven.
+4. En la ventana Maven, pulsa Reload All Maven Projects.
+5. Ve a File > Project Structure > Project y confirma Project SDK = JDK 17 y Language level = 17.
+6. Ve a Settings > Build, Execution, Deployment > Compiler > Java Compiler y confirma Target bytecode version = 17 para el módulo.
+7. Ejecuta Build > Rebuild Project.
+
+No importes ni borres la base de datos para resolver el error JVM target 5; ese mensaje es de configuración de compilación, no de MariaDB.

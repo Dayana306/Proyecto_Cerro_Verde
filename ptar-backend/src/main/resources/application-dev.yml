@@ -1,0 +1,15 @@
+# Perfil de desarrollo (por defecto). Swagger activo y datos de demostración.
+logging:
+  level:
+    pe.smcv.ptar: DEBUG
+    org.hibernate.SQL: WARN
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/ptar_enlozada
+    username: ptar_backend
+    password: "123456789"
+
+  flyway:
+    url: jdbc:mysql://localhost:3306/ptar_enlozada
+    user: ptar_backend
+    password: "123456789"
