@@ -1,5 +1,0 @@
-# Perfil de desarrollo (por defecto). Swagger activo y datos de demostración.
-logging:
-  level:
-    pe.smcv.ptar: DEBUG
-    org.hibernate.SQL: WARN
