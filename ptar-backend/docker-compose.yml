@@ -1,0 +1,63 @@
+# ---------------------------------------------------------------------
+# Desarrollo local con PostgreSQL
+#   Base de datos:               docker compose up -d db
+#   Base de datos + backend:     docker compose up -d --build
+#   Borrar datos locales:        docker compose down -v  (elimina el volumen)
+# ---------------------------------------------------------------------
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: ptar-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-ptar_enlozada}
+      POSTGRES_USER: ${POSTGRES_USER:-ptar_backend}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-123456}
+      TZ: America/Lima
+      PGTZ: America/Lima
+    ports:
+      - "5432:5432"
+    volumes:
+      - ptar_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-ptar_backend} -d ${POSTGRES_DB:-ptar_enlozada}"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+
+  backend:
+    build: .
+    container_name: ptar-backend
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-dev}
+      DB_URL: jdbc:postgresql://db:5432/${POSTGRES_DB:-ptar_enlozada}
+      DB_USER: ${POSTGRES_USER:-ptar_backend}
+      DB_PASSWORD: ${POSTGRES_PASSWORD:-123456}
+      FLYWAY_USER: ${POSTGRES_USER:-ptar_backend}
+      FLYWAY_PASSWORD: ${POSTGRES_PASSWORD:-123456}
+      JWT_SECRET: ${JWT_SECRET:-secreto_de_desarrollo_cambiar_en_produccion_0123456789}
+      JWT_EXPIRATION_MINUTES: ${JWT_EXPIRATION_MINUTES:-480}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:5173,http://localhost:3000}
+      DEMO_DATA: ${DEMO_DATA:-false}
+      STORAGE_DIR: /app/almacenamiento
+      MAIL_HOST: ${MAIL_HOST:-}
+      MAIL_PORT: ${MAIL_PORT:-587}
+      MAIL_USERNAME: ${MAIL_USERNAME:-}
+      MAIL_PASSWORD: ${MAIL_PASSWORD:-}
+      MAIL_FROM: ${MAIL_FROM:-}
+      MAIL_AUTH: ${MAIL_AUTH:-true}
+      MAIL_STARTTLS: ${MAIL_STARTTLS:-true}
+      MAIL_SSL: ${MAIL_SSL:-false}
+      PORT: 8081
+    ports:
+      - "8081:8081"
+    volumes:
+      - ptar_almacenamiento:/app/almacenamiento
+
+volumes:
+  ptar_postgres_data:
+  ptar_almacenamiento:

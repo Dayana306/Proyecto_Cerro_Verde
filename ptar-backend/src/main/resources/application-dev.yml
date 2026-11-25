@@ -1,0 +1,15 @@
+# Perfil de desarrollo (por defecto). Usa variables del entorno; no guarda claves locales.
+logging:
+  level:
+    pe.smcv.ptar: DEBUG
+    org.hibernate.SQL: WARN
+spring:
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/ptar_enlozada}
+    username: ${DB_USER:ptar_backend}
+    password: ${DB_PASSWORD:123456}
+    driver-class-name: org.postgresql.Driver
+  flyway:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/ptar_enlozada}
+    user: ${FLYWAY_USER:${DB_USER:ptar_backend}}
+    password: ${FLYWAY_PASSWORD:${DB_PASSWORD:123456}}
